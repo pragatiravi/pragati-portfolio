@@ -3,9 +3,11 @@ import { profile } from '../data/content';
 
 const links = [
   { href: '#about', label: 'About' },
-  { href: '#skills', label: 'Skills' },
   { href: '#experience', label: 'Experience' },
   { href: '#projects', label: 'Projects' },
+  { href: '#skills', label: 'Skills' },
+  { href: '#leadership', label: 'Leadership' },
+  { href: '#achievements', label: 'Achievements' },
   { href: '#contact', label: 'Contact' },
 ];
 
@@ -18,23 +20,29 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header
-      className={`sticky top-0 z-50 transition-all duration-200 ${
-        scrolled ? 'border-b border-line bg-bg/85 backdrop-blur' : 'border-b border-transparent'
-      }`}
-    >
-      <nav className="container-x flex h-16 items-center justify-between">
-        <a href="#top" className="font-bold tracking-tight text-ink">
-          Pragati<span className="text-primary">.</span>
+    <header className="sticky top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
+      <nav
+        className={`container-x flex h-16 items-center justify-between rounded-full border px-4 backdrop-blur-xl transition-all duration-300 sm:px-6 ${
+          scrolled ? 'border-[#BCD9A2]/75 bg-white/80 shadow-[0_18px_50px_rgba(31,41,55,0.08)]' : 'border-white/40 bg-white/60'
+        }`}
+      >
+        <a href="#top" className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-ink">
+          <span className="grid h-8 w-8 place-items-center rounded-full bg-[#6D9E51] tracking-normal text-[#FEFFD3]">PR</span>
+          <span className="hidden sm:block">Pragati Ravi Gangoji</span>
+          <span className="sm:hidden">Pragati</span>
         </a>
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-2 lg:flex">
           {links.map((l) => (
-            <a key={l.href} href={l.href} className="text-sm font-medium text-ink/70 transition-colors hover:text-primary">
+            <a
+              key={l.href}
+              href={l.href}
+              className="rounded-full px-4 py-2 text-sm font-medium text-ink/70 transition-colors hover:bg-[#BCD9A2]/25 hover:text-ink"
+            >
               {l.label}
             </a>
           ))}
         </div>
-        <a href={`mailto:${profile.email}`} className="btn-primary !px-4 !py-2 text-sm">
+        <a href={`mailto:${profile.email}`} className="btn-primary !px-5 !py-2.5 text-sm">
           Get in touch
         </a>
       </nav>

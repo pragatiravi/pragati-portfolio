@@ -3,11 +3,14 @@ import { profile } from '../data/content';
 
 export default function Footer() {
   return (
-    <footer className="border-t border-line py-10">
-      <div className="container-x flex flex-col items-center justify-between gap-4 sm:flex-row">
-        <p className="text-sm text-ink/60">
-          © {new Date().getFullYear()} {profile.name}. Built with React, Docker & GitLab CI/CD.
-        </p>
+    <footer className="border-t border-[#BCD9A2]/70 py-12 sm:py-14">
+      <div className="container-x flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-primary">Built for the long game</p>
+          <p className="mt-2 text-sm text-ink/60">
+            © {new Date().getFullYear()} {profile.name}. Built with React, Docker & GitLab CI/CD.
+          </p>
+        </div>
         <div className="flex items-center gap-4">
           <a href={profile.github} aria-label="GitHub" target="_blank" rel="noreferrer" className="text-ink/60 hover:text-primary">
             <Github size={20} />
