@@ -1,0 +1,122 @@
+stages:
+  - test
+  - build
+  - docker-build
+  - push-image
+  - deploy
+
+variables:
+  # Image coordinates in the GitLab Container Registry
+  IMAGE_TAG: "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+  IMAGE_LATEST: "$CI_REGISTRY_IMAGE:latest"
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+
+# ---------------- TEST ----------------
+test:
+  stage: test
+  image: node:20-alpine
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - .npm/
+  before_script:
+    - npm ci --cache .npm --prefer-offline || npm install
+  script:
+    - npm run lint || echo "lint warnings (non-blocking)"
+    - npm run test
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH'
+
+# ---------------- BUILD ----------------
+build:
+  stage: build
+  image: node:20-alpine
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - .npm/
+  before_script:
+    - npm ci --cache .npm --prefer-offline || npm install
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+
+# ---------------- DOCKER BUILD ----------------
+docker-build:
+  stage: docker-build
+  image: docker:27
+  services:
+    - docker:27-dind
+  needs:
+    - build
+  dependencies:
+    - build
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+  script:
+    - docker build -t "$IMAGE_TAG" -t "$IMAGE_LATEST" .
+    - docker save "$IMAGE_TAG" -o image.tar
+  artifacts:
+    paths:
+      - image.tar
+    expire_in: 1 hour
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+# ---------------- PUSH IMAGE ----------------
+push-image:
+  stage: push-image
+  image: docker:27
+  services:
+    - docker:27-dind
+  needs:
+    - docker-build
+  dependencies:
+    - docker-build
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+  script:
+    - docker load -i image.tar
+    - docker push "$IMAGE_TAG"
+    - docker tag "$IMAGE_TAG" "$IMAGE_LATEST"
+    - docker push "$IMAGE_LATEST"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+# ---------------- DEPLOY (AWS EC2 over SSH) ----------------
+deploy:
+  stage: deploy
+  image: alpine:3.20
+  needs:
+    - push-image
+  before_script:
+    - apk add --no-cache openssh-client
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    # EC2_SSH_KEY is a FILE-type CI variable containing the private key
+    - cp "$EC2_SSH_KEY" ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -H "$EC2_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+  script:
+    - |
+      ssh -o StrictHostKeyChecking=accept-new "$EC2_USER@$EC2_HOST" \
+        "REGISTRY='$CI_REGISTRY' \
+         REGISTRY_USER='${REGISTRY_DEPLOY_USER:-$CI_REGISTRY_USER}' \
+         REGISTRY_PASSWORD='${REGISTRY_DEPLOY_TOKEN:-$CI_REGISTRY_PASSWORD}' \
+         IMAGE='$IMAGE_TAG' \
+         bash -s" < scripts/deploy.sh
+  environment:
+    name: production
+    url: http://$EC2_HOST
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
