@@ -22,8 +22,10 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
       <nav
-        className={`container-x flex h-16 items-center justify-between rounded-full border px-4 backdrop-blur-xl transition-all duration-300 sm:px-6 ${
-          scrolled ? 'border-[#BCD9A2]/75 bg-white/80 shadow-[0_18px_50px_rgba(31,41,55,0.08)]' : 'border-white/40 bg-white/60'
+        className={`container-x flex items-center justify-between rounded-full border px-4 backdrop-blur-xl transition-all duration-500 sm:px-6 ${
+          scrolled
+            ? 'h-14 border-[#BCD9A2]/75 bg-white/82 shadow-[0_18px_50px_rgba(31,41,55,0.08)] scale-[0.985]'
+            : 'h-16 border-white/40 bg-white/60'
         }`}
       >
         <a href="#top" className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-ink">

@@ -15,7 +15,7 @@ const roles = ['Cloud Engineer', 'Systems Builder', 'Cybersecurity Enthusiast', 
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden pb-16 pt-10 sm:pb-24 sm:pt-14 lg:pb-28">
+    <section className="relative overflow-hidden pb-12 pt-10 sm:pb-18 sm:pt-14 lg:pb-22">
       <motion.div
         aria-hidden
         className="pointer-events-none absolute left-[-8%] top-[-6%] h-72 w-72 rounded-full bg-[#BCD9A2]/35 blur-3xl"
@@ -69,6 +69,10 @@ export default function Hero() {
                 <Linkedin size={18} /> LinkedIn
               </a>
             </motion.div>
+            <motion.div variants={item} className="mt-10 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.26em] text-ink/40">
+              <span className="h-px w-10 bg-gradient-to-r from-[#6D9E51] to-transparent" />
+              Scroll to explore
+            </motion.div>
           </motion.div>
 
           <motion.div variants={container} initial="hidden" animate="visible" className="relative">
@@ -88,6 +92,10 @@ export default function Hero() {
                 <p className="mt-2 text-sm leading-relaxed text-ink/70">
                   Cloud-native systems, secure automation, and product-minded delivery with a calm, high-signal execution style.
                 </p>
+              </div>
+              <div className="mt-5 flex items-center justify-between rounded-[1.35rem] border border-[#BCD9A2]/55 bg-[#FEFFD3]/80 px-4 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-ink/55">
+                <span>Next up</span>
+                <span>Projects</span>
               </div>
             </motion.div>
           </motion.div>
