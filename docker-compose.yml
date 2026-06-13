@@ -1,0 +1,15 @@
+# Used on the EC2 host to run the portfolio container.
+# The CI deploy job renders/uses this with the pushed image tag.
+services:
+  portfolio:
+    image: ${IMAGE:-registry.gitlab.com/pragatiravi-group/portfolio:latest}
+    container_name: portfolio
+    restart: unless-stopped
+    ports:
+      - "80:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/healthz"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
