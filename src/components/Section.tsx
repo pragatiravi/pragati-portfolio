@@ -16,7 +16,7 @@ const reveal = {
 
 export default function Section({ id, eyebrow, title, children, className = '' }: Props) {
   return (
-    <section id={id} className={`relative overflow-hidden py-20 sm:py-24 lg:py-28 ${className}`}>
+    <section id={id} className={`relative overflow-hidden py-14 sm:py-18 lg:py-22 ${className}`}>
       <div className="container-x">
         {(eyebrow || title) && (
           <motion.div
@@ -24,7 +24,7 @@ export default function Section({ id, eyebrow, title, children, className = '' }
             whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
             variants={reveal}
-            className="mb-10 max-w-3xl sm:mb-12"
+            className="mb-8 max-w-3xl sm:mb-10"
           >
             {eyebrow && <span className="eyebrow">{eyebrow}</span>}
             {title && <h2 className="section-title mt-4">{title}</h2>}
