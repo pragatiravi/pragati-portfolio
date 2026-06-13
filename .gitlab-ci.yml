@@ -103,8 +103,9 @@ deploy:
   before_script:
     - apk add --no-cache openssh-client
     - mkdir -p ~/.ssh && chmod 700 ~/.ssh
-    # EC2_SSH_KEY is a FILE-type CI variable containing the private key
-    - cp "$EC2_SSH_KEY" ~/.ssh/id_rsa
+    # EC2_SSH_KEY is a Variable-type CI variable holding the private key CONTENTS.
+    # Write the contents to the key file (do NOT cp it as a path).
+    - printf '%s\n' "$EC2_SSH_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - ssh-keyscan -H "$EC2_HOST" >> ~/.ssh/known_hosts 2>/dev/null
   script:
