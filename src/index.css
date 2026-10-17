@@ -1,0 +1,11 @@
+@import "tailwindcss";
+:root{--bg:#0a0a0f;--card:#13131c;--line:#24243a;--a:#8b5cf6;--b:#22d3ee}
+html{scroll-behavior:smooth}body{background:var(--bg);color:#e8e8f2;font-family:'Space Grotesk',system-ui,sans-serif}
+.grad{background:linear-gradient(135deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.card{background:var(--card);border:1px solid var(--line);border-radius:1rem;transition:transform .3s,border-color .3s,box-shadow .3s}
+.card:hover{transform:translateY(-6px);border-color:var(--a);box-shadow:0 10px 40px -12px var(--a)}
+.btn{display:inline-block;padding:.8rem 1.6rem;border-radius:999px;font-weight:500;transition:transform .2s}.btn:hover{transform:translateY(-2px)}
+.btn-p{background:linear-gradient(135deg,var(--a),var(--b));color:#fff}.btn-o{border:1px solid var(--line)}
+.chip{padding:.35rem .9rem;border:1px solid var(--line);border-radius:999px;font-size:.85rem;background:#ffffff08}
+.glow{position:absolute;border-radius:50%;filter:blur(120px);opacity:.25;pointer-events:none}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
