@@ -108,6 +108,18 @@ function Contact(){const r=useReducedMotion();return <section id="contact" class
   <p className="text-gray-400 mt-2">8431826822 · Belagavi, Karnataka, India</p>
   <div className="mt-8 flex justify-center gap-4 flex-wrap"><motion.a whileHover={r?{}:{scale:1.05,y:-2}} whileTap={r?{}:{scale:.98}} className="btn btn-p" href={MAIL}>Send Message</motion.a><motion.a whileHover={r?{}:{scale:1.05,y:-2}} whileTap={r?{}:{scale:.98}} className="btn btn-o" href={LI} target="_blank" rel="noreferrer">LinkedIn</motion.a><motion.a whileHover={r?{}:{scale:1.05,y:-2}} whileTap={r?{}:{scale:.98}} className="btn btn-o" href={GH} target="_blank" rel="noreferrer">GitHub</motion.a></div></Reveal></section>
 
+}
+
+}
+
+}
+
+}
+
+}
+}
+}
+}
 export default function App(){const {scrollYProgress}=useScroll(),sx=useSpring(scrollYProgress,{stiffness:120,damping:30});
  return <><motion.div style={{scaleX:sx}} className="fixed top-0 left-0 right-0 h-[3px] origin-left bg-gradient-to-r from-violet-500 to-cyan-400 z-50"/>
  <Nav/><main><Hero/><About/><Work/><Stats/><Skills/><Services/><Experience/><Workshops/><Contact/></main>
